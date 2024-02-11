@@ -146,7 +146,7 @@ function App() {
                                       classImage={'rotate-[45deg] ml-1 mb-1 '}/>
                     </div>
                     <div className={'w-[40%] flex justify-end'}>
-                        <CircleButton className={'sm:hidden '} link={'https://t.me/BibusUkraine_bot'} image={Bot}
+                        <CircleButton className={'sm:hidden '} link={'https://t.me/Mesight_bot'} image={Bot}
                                       classImage={'ml-[0.1rem]'}/>
                         <SearchBar className={'sm:hidden justify-center '} onSearch={onSearch}/>
                         <BurgerMenu/>
