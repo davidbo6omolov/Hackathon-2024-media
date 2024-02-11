@@ -93,6 +93,18 @@ function App() {
         }
     }, 500);
 
+    const onSearch = (e,input:string) =>{
+        e.preventDefault()
+        setPage(0)
+        getAllNews(input,page).then((res) => {
+            setLoading(false);
+            setCardInfo(res)
+        }).catch((err) => {
+            console.log(err);
+            setLoading(false);
+        })
+    }
+
     useEffect(() => {
         handleScroll();
         window.addEventListener("scroll", handleScroll);
@@ -121,6 +133,8 @@ function App() {
         return date.toLocaleDateString('en-US', options);
     }
 
+
+
     return (
         <div className={'min-h-screen h-full relative overflow-hidden flex flex-col justify-between'}>
             <header className={'flex justify-center h-[80px]'}>
@@ -128,13 +142,13 @@ function App() {
                     <div className={'flex w-[45%] h-[60%] items-center '}>
                         <Logo/>
                         <FilterBar topics={topics} setClicked={() => setClicked(!clicked)} clicked={clicked}/>
-                        <CircleButton className={'sm:hidden'} link={'#'} image={HtmlSign}
+                        <CircleButton className={'sm:hidden'} link={'http://mediainsightsservice.northeurope.cloudapp.azure.com:8080/api/articles/feed'} image={HtmlSign}
                                       classImage={'rotate-[45deg] ml-1 mb-1 '}/>
                     </div>
                     <div className={'w-[40%] flex justify-end'}>
                         <CircleButton className={'sm:hidden '} link={'https://t.me/BibusUkraine_bot'} image={Bot}
                                       classImage={'ml-[0.1rem]'}/>
-                        <SearchBar className={'sm:hidden justify-center '}/>
+                        <SearchBar className={'sm:hidden justify-center '} onSearch={onSearch}/>
                         <BurgerMenu/>
                     </div>
                 </div>
