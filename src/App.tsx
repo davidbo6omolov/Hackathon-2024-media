@@ -1,7 +1,9 @@
-import {useEffect, useState, useRef} from "react";
+import React,{useEffect, useState, useRef} from "react";
 import {RootState} from "./store/store";
+import {CardInfo} from "./components/cards/Cards";
 import {getAllNews} from './service/ApiService';
 import {useSelector} from "react-redux";
+// @ts-expect-error: This import is necessary for backward compatibility with a legacy module.
 import _throttle from "lodash/throttle"
 import Cards from "./components/cards/Cards";
 import Logo from "./components/ui/logo/Logo";
@@ -9,67 +11,16 @@ import SearchBar from "./components/ui/search-bar/SearchBar";
 import FilterBar from "./components/ui/filter-bar/FilterBar";
 import CircleButton from "./components/ui/html-code-sign/CircleButton";
 
-import TestIcon2 from './assets/TestIcon2.webp'
-import ImageOverview from './assets/imageOverview.jpeg'
 import HtmlSign from './assets/htmlCodeSign.svg';
 import Bot from './assets/bot.svg';
 import BurgerMenu from "./components/ui/burger-menu/BurgerMenu";
-import {Simulate} from "react-dom/test-utils";
-import load = Simulate.load;
+
+
+
 
 
 const topics = ['Ai', 'React', 'Java', 'JS', 'Weather', 'Politics', 'Music', 'Movies', 'Crypto', 'Tech-News', '.Net', 'Gaming', 'Machine-Learning', 'Testing', 'Database', 'Data-science']
-// const cardInfo = [
-//     {
-//         id: '1',
-//         logoLink: TestIcon2,
-//         title: 'The future of AI',
-//         topic: 'AI',
-//         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-//         publishDate: '2022-04-08T00:00:00.000Z',
-//         url: 'https://www.google.com'
-//     },
-//     {
-//         id: '2',
-//         imageLink: ImageOverview,
-//         title: 'asdasdasd',
-//         topic: 'Machine-learning',
-//         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-//         publishDate: '2022-03-08T00:00:00.000Z',
-//         url: 'https://dasdasd'
-//     },
-//     {
-//         id: '3',
-//         logoLink: TestIcon2,
-//         imageLink: ImageOverview,
-//         title: 'dasdascxc',
-//         topic: 'Tech-learning',
-//         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-//         publishDate: '2022-02-08T00:00:00.000Z',
-//         url: 'https://www.google.com'
-//     },
-//     {
-//         id: '4',
-//         logoLink: TestIcon2,
-//         imageLink: ImageOverview,
-//         title: 'Tsdssda',
-//         topic: 'Crypto',
-//         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-//         publishDate: '2023-02-08T00:00:00.000Z',
-//         url: 'https://www.google.com'
-//     }
-//     ,
-//     {
-//         id: '5',
-//         logoLink: TestIcon2,
-//         imageLink: ImageOverview,
-//         title: 'The future of AI',
-//         topic: 'AI',
-//         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-//         publishDate: '2022-04-08T00:00:00.000Z',
-//         url: 'https://www.google.com'
-//     }
-// ]
+
 
 function App() {
     const [clicked, setClicked] = useState(false);
@@ -78,7 +29,7 @@ function App() {
     const [loading, setLoading] = useState(true);
     const date = new Date();
     const year = date.getFullYear();
-    const [cardInfo, setCardInfo] = useState([]);
+    const [cardInfo, setCardInfo] = useState<CardInfo[]>([]);
     const elRef = useRef<HTMLDivElement>(null)
     const selectedFilters = useSelector((state: RootState) => state.app.filter);
 
@@ -93,7 +44,7 @@ function App() {
         }
     }, 500);
 
-    const onSearch = (e,input:string) =>{
+    const onSearch = (e:React.FormEvent<HTMLFormElement>,input:string) =>{
         e.preventDefault()
         setPage(0)
         getAllNews(input,page).then((res) => {
@@ -118,7 +69,7 @@ function App() {
             getAllNews(selectedFilters.join(',').toLowerCase(), page)
                 .then((res) => {
                     setLoading(false);
-                    setCardInfo((prevCardInfo) => [...prevCardInfo, ...res]);
+                    setCardInfo((prevCardInfo:CardInfo[]) => [...prevCardInfo, ...res] as CardInfo[]);
                 })
                 .catch((err) => {
                     console.log(err);
@@ -148,7 +99,7 @@ function App() {
                     <div className={'w-[40%] flex justify-end'}>
                         <CircleButton className={'sm:hidden '} link={'https://t.me/Mesight_bot'} image={Bot}
                                       classImage={'ml-[0.1rem]'}/>
-                        <SearchBar className={'sm:hidden justify-center '} onSearch={onSearch}/>
+                        <SearchBar className={'sm:hidden justify-center '} onSearch={(e, input) => onSearch(e, input)}/>
                         <BurgerMenu/>
                     </div>
                 </div>
@@ -156,16 +107,14 @@ function App() {
             <main className={'flex justify-center h-full my-3'}>
                 <div className={'w-[95%] h-full flex flex-wrap justify-between md:justify-center sm:justify-center'}>
                     <div
-                        className={'w-[95%] h-full flex flex-wrap justify-between md:justify-center sm:justify-center'}>
+                        className={'h-full flex flex-wrap justify-between md:justify-center sm:justify-center'}>
                         {loading ? (
-                            // Display 8 placeholder cards when loading is true
-                            Array.from({ length: 8 }, (_, index) => (
+                            Array.from({ length: 10 }, (_, index) => (
                                 <Cards key={index} loading={loading} />
                             ))
                         ) : (
-                            // Render actual cards when loading is false
                             cardInfo?.map((card, index) => (
-                                <Cards key={index} card={{ ...card, publishDate: formatDate(card.publishDate) }} loading={loading} />
+                                <Cards key={index} card={{ ...card as CardInfo, publishDate: formatDate(card.publishDate) }} loading={loading} />
                             ))
                         )}
                         {

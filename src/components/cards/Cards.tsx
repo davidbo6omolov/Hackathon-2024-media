@@ -5,7 +5,7 @@ import Link from '../../assets/link.svg'
 import styles from './Cards.module.css'
 
 
-type CardInfo = {
+export type CardInfo = {
     uuid: string,
     topic?: string | undefined,
     title: string,
@@ -15,10 +15,9 @@ type CardInfo = {
     publishDate: string,
     imageLink?: string | undefined,
 
-    loading: boolean
 }
 
-const Cards = ({card, loading}: CardInfo) => {
+const Cards = ({card, loading}: {card?: CardInfo, loading: boolean}) =>{
     const [reply, setReply] = useState(false)
     const [selectedCardId, setSelectedCardId] = useState('');
     const [coppied, setCoppied] = useState(false)
@@ -37,7 +36,7 @@ const Cards = ({card, loading}: CardInfo) => {
     return (
         <>
             <div
-                className={`w-[250px] h-[350px] mb-8 mr-2 relative cursor-pointer ${styles.cardSide}`}>
+                className={`w-[250px] h-[350px] mb-8 mr-4 relative cursor-pointer ${styles.cardSide}`}>
                 <div
                     className={`flex justify-center items-center w-full h-full bg-secondary border-primary border-2 rounded-md  ${styles.cardFront}`}>
                     <div className={'w-[85%] h-[95%] flex flex-col relative'}>
@@ -58,7 +57,7 @@ const Cards = ({card, loading}: CardInfo) => {
                                 }
                                 {loading ?
                                     <div className={'animate-pulse bg-gray-300 rounded-full w-[50px] h-[12px] '}/> :
-                                    <p className={'text-xs text-white'}>creator • {card.publishDate}</p>}
+                                    <p className={'text-xs text-white'}>creator • {card?.publishDate}</p>}
                             </div>
                         </div>
                         <div className={'mt-5 '}>
@@ -68,12 +67,12 @@ const Cards = ({card, loading}: CardInfo) => {
                                     <div className={'animate-pulse bg-gray-300 rounded w-[100%] h-[12px] my-1'}></div>
                                     <div className={'animate-pulse bg-gray-300 rounded w-[70%] h-[12px] my-1'}></div>
                                 </>
-                            ) : <h1 className={'font-bold text-white '}>{card.title}</h1>}
+                            ) : <h1 className={'font-bold text-white '}>{card?.title && card?.title.length > 50 ? card?.title.slice(0,51) + '...' : card?.title}</h1>}
                         </div>
                         <div
                             className={`mt-6 h-[35%] flex justify-center items-center ${card?.imageLink && !loading ? '' : 'bg-emptyImage'} rounded`}>
                             {loading ? <div className={'animate-pulse bg-gray-300 rounded w-[100%] h-[100%] '}/> :
-                                card.imageLink && <img src={card?.imageLink} alt={'image overview'}
+                                card?.imageLink && <img src={card?.imageLink} alt={'image overview'}
                                                            className={'w-full h-full object-cover rounded'}/>
 
                             }
@@ -103,7 +102,7 @@ const Cards = ({card, loading}: CardInfo) => {
                                 }
                                 {loading ?
                                     <div className={'animate-pulse bg-gray-300 rounded-full w-[50px] h-[12px] '}/> :
-                                    <p className={'text-xs text-white'}>creator • {card.publishDate}</p>}
+                                    <p className={'text-xs text-white'}>creator • {card?.publishDate}</p>}
                             </div>
                         </div>
                         <div className={`mt-5 ${reply && !loading ? 'blur-sm' : ''}`}>
@@ -119,29 +118,29 @@ const Cards = ({card, loading}: CardInfo) => {
                                         <div className={'animate-pulse bg-gray-300 rounded w-[60%] h-[12px] my-1'}></div>
                                     </>
                                 ) :
-                                <p className={'text-white text-sm font-bold'}>{card.description}</p>
+                                <p className={'text-white text-sm font-bold'}>{card?.description && card?.description.length > 280 ? card?.description.slice(0,281) + '...' : card?.description}</p>
                             }
                         </div>
                         {
                             reply && !loading && (
                                 <button
-                                    className={`${coppied && card.uuid === selectedCardId ? 'bg-emptyImage text-white' : 'bg-quinary'} duration-500 absolute  w-[60%] h-[30px] p-1 top-[40%] left-[25%] flex items-center justify-center rounded-full px-2`}
+                                    className={`${coppied && card?.uuid === selectedCardId ? 'bg-emptyImage text-white' : 'bg-quinary'} duration-500 absolute  w-[60%] h-[30px] p-1 top-[40%] left-[25%] flex items-center justify-center rounded-full px-2`}
                                     onClick={() => {
-                                        copyLinkToClipboard(card.url);
-                                        setSelectedCardId(card.uuid);
+                                        copyLinkToClipboard(card?.url ? card.url :'');
+                                        setSelectedCardId(card?.uuid ? card.uuid : '');
                                     }}
                                   >
-                                    {coppied && card.uuid === selectedCardId ? null :
+                                    {coppied && card?.uuid === selectedCardId ? null :
                                         <img src={Link} alt={'link'} className={'w-[16px] h-[16px] mr-1'}/>}
                                     <p className={'text-sm'}>{
-                                        coppied && card.uuid === selectedCardId ? 'Link coppied!' : 'Copy link'
+                                        coppied && card?.uuid === selectedCardId ? 'Link coppied!' : 'Copy link'
                                     }</p>
                                 </button>
                             )
                         }
                         <div className={'h-[8%] w-full flex justify-between absolute bottom-0 items-center'}>
                             {
-                              !loading ? <a href={card.url} target={'_blank'} rel={'noreferrer noopener'}
+                              !loading ? <a href={card?.url} target={'_blank'} rel={'noreferrer noopener'}
                                              className={'flex text-sm  bg-quinary px-3 rounded py-1 items-center border-[2px] border-primary'}>
                                   <img src={Share} alt={'share icon'} className={'h-[16px] w-[16px] mr-1'}/>
                                   Read post

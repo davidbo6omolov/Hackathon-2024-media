@@ -1,9 +1,9 @@
-import {useState} from 'react'
+import React,{useState} from 'react'
 import SearchIcon from '../../../assets/search.svg'
 
 type SearchBarProps = {
     className?: string
-    onSearch:()=> void
+    onSearch: (e: React.FormEvent<HTMLFormElement>, input: string) => void;
 
 }
 const SearchBar = ({className,onSearch}:SearchBarProps) => {
