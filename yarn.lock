@@ -1739,6 +1739,11 @@ use-sync-external-store@^1.0.0:
   resolved "https://registry.yarnpkg.com/use-sync-external-store/-/use-sync-external-store-1.2.0.tgz#7dbefd6ef3fe4e767a0cf5d7287aacfb5846928a"
   integrity sha512-eEgnFxGQ1Ife9bzYs6VLi8/4X6CObHMw9Qr9tPY43iKwsPw8xE8+EFsf/2cFZ5S3esXgpWgtSCtLNS41F+sKPA==
 
+vite-plugin-tailwindcss@^0.0.0-0:
+  version "0.0.0-0"
+  resolved "https://registry.yarnpkg.com/vite-plugin-tailwindcss/-/vite-plugin-tailwindcss-0.0.0-0.tgz#b657a2f9cfb63820accb74e8f41be462371deb46"
+  integrity sha512-vb84O0cUAN8a79KiL3lPcHrvJ6ODZrjex3ekS4TgxBhyJJzf53mkBbT/LfUKhJ7jsz160Ml3e4lyqNLOdE7bgQ==
+
 vite@^5.1.0:
   version "5.1.1"
   resolved "https://registry.yarnpkg.com/vite/-/vite-5.1.1.tgz#294e39b199d669981efc7e0261b14f78ec80819e"
