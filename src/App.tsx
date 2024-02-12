@@ -15,9 +15,7 @@ import HtmlSign from './assets/htmlCodeSign.svg';
 import Bot from './assets/bot.svg';
 import BurgerMenu from "./components/ui/burger-menu/BurgerMenu";
 
-
-
-
+import './App.css'
 
 const topics = ['Ai', 'React', 'Java', 'JS', 'Weather', 'Politics', 'Music', 'Movies', 'Crypto', 'Tech-News', '.Net', 'Gaming', 'Machine-Learning', 'Testing', 'Database', 'Data-science']
 
